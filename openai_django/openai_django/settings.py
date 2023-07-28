@@ -12,10 +12,24 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import json
+
+# read secrets
+secrets_path = 'secrets.json'
+try:
+    with open( secrets_path, 'r' ) as json_file:
+        secrets = json.load( json_file )
+except FileNotFoundError:
+    print (f"File not found at '{ secrets_path }'. Please provide the correct file path." )
+except json.JSONDecodeError as e:
+    print( f"Error decoding JSON: {e}" )
+except Exception as e:
+    print( f"An error occurred: {e}" )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+# OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+OPENAI_API_KEY = secrets['openapi-key']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
